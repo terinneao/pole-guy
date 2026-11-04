@@ -1,0 +1,11 @@
+.git
+.github
+tests/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+run.bat
+scratch/
+.system_generated/
