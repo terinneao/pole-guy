@@ -1,60 +1,21 @@
 import os
 import sqlite3
-import shutil
-import tempfile
 from typing import List, Dict, Any, Optional
 from database.seed_data import DEFAULT_CONDUCTORS
 
 DB_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(DB_DIR, "conductors.db")
 SCHEMA_PATH = os.path.join(DB_DIR, "schema.sql")
-SOURCE_DB_PATH = os.path.join(DB_DIR, "conductors.db")
-DB_PATH = SOURCE_DB_PATH  # Maintained for backwards compatibility
-
-def is_running_on_vercel() -> bool:
-    """Check if the environment is Vercel, AWS Lambda, or a read-only filesystem."""
-    if os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
-        return True
-    try:
-        test_file = os.path.join(DB_DIR, ".write_test")
-        with open(test_file, "w") as f:
-            f.write("test")
-        os.remove(test_file)
-        return False
-    except (OSError, IOError, PermissionError):
-        return True
-
-def get_db_path() -> str:
-    """
-    Returns the appropriate path for the SQLite database.
-    On Vercel / serverless / read-only environments, uses tempfile.gettempdir()/conductors.db.
-    Copies existing DB if available or initializes fresh from schema/seed.
-    """
-    if is_running_on_vercel():
-        tmp_db = os.path.join(tempfile.gettempdir(), "conductors.db")
-        if not os.path.exists(tmp_db):
-            if os.path.exists(SOURCE_DB_PATH):
-                try:
-                    shutil.copyfile(SOURCE_DB_PATH, tmp_db)
-                except Exception:
-                    pass
-        return tmp_db
-    return SOURCE_DB_PATH
 
 def get_db_connection() -> sqlite3.Connection:
     """Create a database connection with dict-like row access."""
-    db_path = get_db_path()
-    # Ensure database file exists if in /tmp
-    if is_running_on_vercel() and not os.path.exists(db_path):
-        init_db()
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db(force_reseed: bool = False):
     """Initialize database tables and seed with standard conductors if empty."""
-    db_path = get_db_path()
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     # Read and execute schema
@@ -68,28 +29,26 @@ def init_db(force_reseed: bool = False):
 
     if force_reseed:
         cursor.execute("DELETE FROM conductors")
-        count = 0
-
-    if count == 0:
-        insert_sql = """
-            INSERT OR IGNORE INTO conductors 
-            (code, name, conductor_type, cross_section_sqmm, overall_diameter_mm, 
-             weight_kg_per_m, breaking_strength_kg, standard, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """
-        for c in DEFAULT_CONDUCTORS:
-            cursor.execute(insert_sql, (
-                c["code"],
-                c["name"],
-                c["conductor_type"],
-                c["cross_section_sqmm"],
-                c["overall_diameter_mm"],
-                c["weight_kg_per_m"],
-                c["breaking_strength_kg"],
-                c.get("standard", "PEA/TIS"),
-                c.get("notes", "")
-            ))
-        conn.commit()
+    
+    insert_sql = """
+        INSERT OR IGNORE INTO conductors 
+        (code, name, conductor_type, cross_section_sqmm, overall_diameter_mm, 
+         weight_kg_per_m, breaking_strength_kg, standard, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """
+    for c in DEFAULT_CONDUCTORS:
+        cursor.execute(insert_sql, (
+            c["code"],
+            c["name"],
+            c["conductor_type"],
+            c["cross_section_sqmm"],
+            c["overall_diameter_mm"],
+            c["weight_kg_per_m"],
+            c["breaking_strength_kg"],
+            c.get("standard", "PEA/TIS"),
+            c.get("notes", "")
+        ))
+    conn.commit()
 
     conn.close()
 
@@ -201,4 +160,4 @@ def delete_conductor(conductor_id: int) -> bool:
 
 if __name__ == "__main__":
     init_db()
-    print(f"Database initialized at {get_db_path()}. Total conductors: {len(get_all_conductors())}")
+    print(f"Database initialized at {DB_PATH}. Total conductors: {len(get_all_conductors())}")
