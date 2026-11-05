@@ -105,6 +105,26 @@ STANDARD_OHGW_SPECS = {
     }
 }
 
+def safe_float(val: Any, default: float = 0.0) -> float:
+    """Safely convert any value to a valid finite float, falling back to default."""
+    if val is None or val == "":
+        return float(default)
+    try:
+        f = float(val)
+        return float(default) if (math.isnan(f) or math.isinf(f)) else f
+    except (ValueError, TypeError):
+        return float(default)
+
+def safe_int(val: Any, default: int = 1) -> int:
+    """Safely convert any value to an int, falling back to default."""
+    if val is None or val == "":
+        return int(default)
+    try:
+        f = float(val)
+        return int(default) if (math.isnan(f) or math.isinf(f)) else int(f)
+    except (ValueError, TypeError):
+        return int(default)
+
 def calculate_pole_guy_system(input_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Perform complete statics and structural check of the pole guy wire system.
@@ -114,54 +134,63 @@ def calculate_pole_guy_system(input_data: Dict[str, Any]) -> Dict[str, Any]:
     - anchor: { distance_m }
     - guy_wire_spec: { size_sqmm, rts_kg, unit_weight_kg_m, required_sf }
     - calculation_method: 'elastic' | 'equal_moment' | 'equal_shear'
-    - conductors: list of up to 3 conductor levels:
-        { id, level, enabled, height_m, code, name, breaking_strength_kg,
-          unit_weight_kg_m, overall_diameter_mm, tension_mode, tension_kg,
-          tension_ratio, num_conductors, span_length_m, wind_pressure_kg_m2,
-          deviation_angle_deg }
-    - guy_wires: list of up to 7 guy wire levels:
-        { level, enabled, height_m, anchor_distance_m }
+    - conductors: list of conductor levels
+    - guy_wires: list of guy wire levels
     """
-    pole = input_data.get("pole", {})
-    pole_height = float(pole.get("height_m", 14.3))
-    pole_embedment = float(pole.get("embedment_m", 2.0))
-    pole_weight = float(pole.get("weight_kg", 1200.0))
+    if not isinstance(input_data, dict):
+        input_data = {}
+
+    pole = input_data.get("pole")
+    if not isinstance(pole, dict):
+        pole = {}
+    pole_height = max(1.0, safe_float(pole.get("height_m"), 22.0))
+    pole_embedment = max(0.0, safe_float(pole.get("embedment_m"), 2.8))
+    pole_weight = max(0.0, safe_float(pole.get("weight_kg"), 3500.0))
     pole_above_ground = max(0.0, pole_height - pole_embedment)
 
-    global_anchor_dist = float(input_data.get("anchor", {}).get("distance_m", 8.0))
+    anchor = input_data.get("anchor")
+    if not isinstance(anchor, dict):
+        anchor = {}
+    global_anchor_dist = max(0.1, safe_float(anchor.get("distance_m"), 12.0))
     
-    guy_spec = input_data.get("guy_wire_spec", {})
-    raw_size = float(guy_spec.get("size_sqmm", 95.0))
+    guy_spec = input_data.get("guy_wire_spec")
+    if not isinstance(guy_spec, dict):
+        guy_spec = {}
+    raw_size = safe_float(guy_spec.get("size_sqmm"), 95.0)
     closest_size = min(STANDARD_GUY_SPECS.keys(), key=lambda s: abs(s - raw_size))
     spec_info = STANDARD_GUY_SPECS.get(closest_size, STANDARD_GUY_SPECS[95])
 
     guy_type = guy_spec.get("name") or guy_spec.get("type") or spec_info["name"]
-    guy_size = float(guy_spec.get("size_sqmm", spec_info["size_sqmm"]))
-    guy_rts = float(guy_spec.get("rts_kg", spec_info["default_rts_kg"]))
-    guy_unit_wt = float(guy_spec.get("unit_weight_kg_m", spec_info["unit_weight_kg_m"])) # kg/m
-    required_sf = float(guy_spec.get("required_sf", 2.0))
+    guy_size = safe_float(guy_spec.get("size_sqmm"), spec_info["size_sqmm"])
+    guy_rts = max(1.0, safe_float(guy_spec.get("rts_kg"), spec_info["default_rts_kg"]))
+    guy_unit_wt = max(0.001, safe_float(guy_spec.get("unit_weight_kg_m"), spec_info["unit_weight_kg_m"])) # kg/m
+    required_sf = max(0.1, safe_float(guy_spec.get("required_sf"), 2.0))
     
     calc_method = input_data.get("calculation_method", "elastic")
     
     # Process Conductor Levels
-    raw_conductors = input_data.get("conductors", [])
+    raw_conductors = input_data.get("conductors")
+    if not isinstance(raw_conductors, list):
+        raw_conductors = []
     conductor_results = []
     total_conductor_h_force = 0.0
     total_overturning_moment = 0.0
     total_conductor_weight = 0.0
 
     for idx, c in enumerate(raw_conductors):
-        level_num = c.get("level", idx + 1)
+        if not isinstance(c, dict):
+            continue
+        level_num = safe_int(c.get("level"), idx + 1)
         enabled = bool(c.get("enabled", True))
-        height_m = float(c.get("height_m", 12.0 - idx * 1.5))
-        num_cond = max(1, int(c.get("num_conductors", 2)))
-        rts_kg = float(c.get("breaking_strength_kg", 6680.0))
-        unit_wt = float(c.get("weight_kg_per_m", 1.100))
-        diam_mm = float(c.get("overall_diameter_mm", 26.0))
-        span_m = max(1.0, float(c.get("span_m", c.get("span_length_m", 80.0))))
-        sag_m = max(0.01, float(c.get("sag_m", 0.60)))
-        wind_p = max(0.0, float(c.get("wind_pressure_kg_m2", 0.0)))
-        angle_deg = float(c.get("deviation_angle_deg", 0.0))
+        height_m = max(0.0, safe_float(c.get("height_m"), max(2.0, 18.5 - idx * 2.0)))
+        num_cond = max(1, safe_int(c.get("num_conductors"), 2))
+        rts_kg = max(1.0, safe_float(c.get("breaking_strength_kg"), 6680.0))
+        unit_wt = max(0.001, safe_float(c.get("weight_kg_per_m"), 1.100))
+        diam_mm = max(0.1, safe_float(c.get("overall_diameter_mm"), 26.0))
+        span_m = max(1.0, safe_float(c.get("span_m") if c.get("span_m") is not None else c.get("span_length_m"), 80.0))
+        sag_m = max(0.01, safe_float(c.get("sag_m"), 0.60))
+        wind_p = max(0.0, safe_float(c.get("wind_pressure_kg_m2"), 0.0))
+        angle_deg = safe_float(c.get("deviation_angle_deg"), 0.0)
         
         mode = c.get("tension_mode", "sag_span")
 
@@ -172,9 +201,9 @@ def calculate_pole_guy_system(input_data: Dict[str, Any]) -> Dict[str, Any]:
         
         # Calculate working tension per conductor from span and sag or override
         if mode == "direct":
-            single_tension = float(c.get("tension_kg", 800.0))
+            single_tension = max(0.0, safe_float(c.get("tension_kg"), 800.0))
         elif mode == "ratio":
-            ratio = float(c.get("tension_ratio", 0.20))
+            ratio = safe_float(c.get("tension_ratio"), 0.20)
             single_tension = rts_kg * ratio
         else: # "sag_span" (default): Parabolic sag formula with resultant weight T = (w_r * S^2) / (8 * sag)
             # w_r = resultant unit weight (kg/m), span_m = S, sag_m = D
@@ -253,19 +282,21 @@ def calculate_pole_guy_system(input_data: Dict[str, Any]) -> Dict[str, Any]:
 
     # Process Overhead Ground Wire (OHGW - installed over top conductor)
     raw_ohgw = input_data.get("overhead_ground_wire") or input_data.get("ohgw") or {}
+    if not isinstance(raw_ohgw, dict):
+        raw_ohgw = {}
     ohgw_code = raw_ohgw.get("code", "GSW-35")
     spec_ohgw = STANDARD_OHGW_SPECS.get(ohgw_code, STANDARD_OHGW_SPECS.get("GSW-35", {}))
     ohgw_enabled = bool(raw_ohgw.get("enabled", False))
-    ohgw_height = float(raw_ohgw.get("height_m", 19.1))
-    ohgw_num = max(1, int(raw_ohgw.get("num_conductors", raw_ohgw.get("num_wires", 1))))
+    ohgw_height = max(0.0, safe_float(raw_ohgw.get("height_m"), 19.1))
+    ohgw_num = max(1, safe_int(raw_ohgw.get("num_conductors", raw_ohgw.get("num_wires")), 1))
     ohgw_name = raw_ohgw.get("name", spec_ohgw.get("name", "35 sq.mm Galvanized Steel Strand"))
-    ohgw_unit_wt = float(raw_ohgw.get("weight_kg_per_m", spec_ohgw.get("weight_kg_per_m", 0.272)))
-    ohgw_rts = float(raw_ohgw.get("breaking_strength_kg", spec_ohgw.get("breaking_strength_kg", 2330.0)))
-    ohgw_diam_mm = float(raw_ohgw.get("overall_diameter_mm", spec_ohgw.get("diameter_mm", 7.5)))
-    ohgw_span_m = max(1.0, float(raw_ohgw.get("span_m", 80.0)))
-    ohgw_sag_m = max(0.01, float(raw_ohgw.get("sag_m", 0.50)))
-    ohgw_wind_p = max(0.0, float(raw_ohgw.get("wind_pressure_kg_m2", 0.0)))
-    ohgw_angle_deg = float(raw_ohgw.get("deviation_angle_deg", 0.0))
+    ohgw_unit_wt = max(0.001, safe_float(raw_ohgw.get("weight_kg_per_m", spec_ohgw.get("weight_kg_per_m")), 0.272))
+    ohgw_rts = max(1.0, safe_float(raw_ohgw.get("breaking_strength_kg", spec_ohgw.get("breaking_strength_kg")), 2330.0))
+    ohgw_diam_mm = max(0.1, safe_float(raw_ohgw.get("overall_diameter_mm", spec_ohgw.get("diameter_mm")), 7.5))
+    ohgw_span_m = max(1.0, safe_float(raw_ohgw.get("span_m"), 80.0))
+    ohgw_sag_m = max(0.01, safe_float(raw_ohgw.get("sag_m"), 0.50))
+    ohgw_wind_p = max(0.0, safe_float(raw_ohgw.get("wind_pressure_kg_m2"), 0.0))
+    ohgw_angle_deg = safe_float(raw_ohgw.get("deviation_angle_deg"), 0.0)
     ohgw_mode = raw_ohgw.get("tension_mode", "sag_span")
 
     # Wind load per meter on single OHGW: w_wind = P_wind * (diam_mm / 1000)
@@ -274,9 +305,9 @@ def calculate_pole_guy_system(input_data: Dict[str, Any]) -> Dict[str, Any]:
     ohgw_w_resultant = math.sqrt(ohgw_unit_wt**2 + ohgw_w_wind**2)
 
     if ohgw_mode == "direct":
-        ohgw_single_t = float(raw_ohgw.get("tension_kg", 245.0))
+        ohgw_single_t = max(0.0, safe_float(raw_ohgw.get("tension_kg"), 245.0))
     elif ohgw_mode == "ratio":
-        ratio = float(raw_ohgw.get("tension_ratio", 0.15))
+        ratio = safe_float(raw_ohgw.get("tension_ratio"), 0.15)
         ohgw_single_t = ohgw_rts * ratio
     else:
         # sag_span with resultant weight T = (w_r * S^2) / (8 * sag)
@@ -350,32 +381,34 @@ def calculate_pole_guy_system(input_data: Dict[str, Any]) -> Dict[str, Any]:
             "deviation_angle_deg": ohgw_angle_deg
         }
 
-    # Process Guy Wire Levels (up to 7)
-    raw_guys = input_data.get("guy_wires", [])
+    # Process Guy Wire Levels
+    raw_guys = input_data.get("guy_wires")
+    if not isinstance(raw_guys, list):
+        raw_guys = []
     active_guys = []
     parsed_guys = []
 
     for idx, g in enumerate(raw_guys):
-        level_num = g.get("level", idx + 1)
+        if not isinstance(g, dict):
+            continue
+        level_num = safe_int(g.get("level"), idx + 1)
         enabled = bool(g.get("enabled", True))
-        height_m = float(g.get("height_m", max(2.0, 14.0 - idx * 1.8)))
+        height_m = max(0.1, safe_float(g.get("height_m"), max(2.0, 18.5 - idx * 2.0)))
         # Anchor distance for this level (or global anchor)
-        anchor_d = float(g.get("anchor_distance_m", global_anchor_dist))
-        if anchor_d <= 0.0:
-            anchor_d = global_anchor_dist
+        anchor_d = max(0.1, safe_float(g.get("anchor_distance_m"), global_anchor_dist))
 
         # Level-specific guy wire size & properties
-        level_raw_size = float(g.get("size_sqmm", guy_size))
+        level_raw_size = safe_float(g.get("size_sqmm"), guy_size)
         level_closest = min(STANDARD_GUY_SPECS.keys(), key=lambda s: abs(s - level_raw_size))
         level_spec = STANDARD_GUY_SPECS.get(level_closest, STANDARD_GUY_SPECS[95])
 
-        level_size = float(g.get("size_sqmm", level_spec["size_sqmm"]))
-        level_unit_wt = float(g.get("unit_weight_kg_m", level_spec["unit_weight_kg_m"]))
+        level_size = safe_float(g.get("size_sqmm"), level_spec["size_sqmm"])
+        level_unit_wt = max(0.001, safe_float(g.get("unit_weight_kg_m", level_spec["unit_weight_kg_m"]), level_spec["unit_weight_kg_m"]))
         default_level_rts = guy_rts if abs(level_size - guy_size) < 1.0 else level_spec["default_rts_kg"]
-        level_rts = float(g.get("rts_kg", default_level_rts))
+        level_rts = max(1.0, safe_float(g.get("rts_kg"), default_level_rts))
         level_area = level_size  # mm^2 nominal area
 
-        slope_len = math.sqrt(height_m**2 + anchor_d**2)
+        slope_len = max(0.1, math.sqrt(height_m**2 + anchor_d**2))
         angle_rad = math.atan2(height_m, anchor_d)
         angle_deg = math.degrees(angle_rad)
         cos_a = anchor_d / slope_len
