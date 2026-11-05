@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,37 +9,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body class="min-h-screen flex flex-col">
 
     <!-- Top Navigation Bar -->
     <header class="bg-slate-900 text-white border-b border-slate-800 shadow-sm sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-lg text-white shadow-md">
+                <div
+                    class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-lg text-white shadow-md">
                     PG
                 </div>
                 <div>
                     <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
                         Pole Guy Wire Calculator
-                        <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-900/80 text-blue-300 border border-blue-700">PEA / TIS 404</span>
+                        <span
+                            class="text-xs font-medium px-2 py-0.5 rounded bg-blue-900/80 text-blue-300 border border-blue-700">PEA
+                            / TIS 404</span>
                     </h1>
                     <p class="text-xs text-slate-400">
-                        7 Levels Guy Wires (95 & 50 sq.mm) vs 3 Levels Conductors + Overhead Ground Wire | Metric Units (kg, m)
+                        7 Levels Guy Wires (95 & 50 sq.mm) vs 3 Levels Conductors + Overhead Ground Wire | Metric Units
+                        (kg, m)
                     </p>
                 </div>
             </div>
 
             <!-- Header Actions -->
             <div class="flex items-center gap-3">
-                <button id="btn-open-db-modal" class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 hover:text-white border border-slate-700 transition">
+                <button id="btn-open-db-modal"
+                    class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 hover:text-white border border-slate-700 transition">
                     <svg class="w-4 h-4 mr-1.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16M4 12h16M4 17h16" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16M4 12h16M4 17h16" />
                     </svg>
                     Conductor SQL Database
                 </button>
-                <button id="btn-print-report" class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-500 shadow-sm transition">
+                <button id="btn-print-report"
+                    class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-500 shadow-sm transition">
                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                     </svg>
                     Print Report
                 </button>
@@ -50,29 +60,36 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1 w-full">
 
         <!-- Top Presets & Method Selector Bar -->
-        <div class="bg-white rounded-xl p-3 mb-5 border border-slate-200 card-shadow flex flex-wrap items-center justify-between gap-3 text-sm">
+        <div
+            class="bg-white rounded-xl p-3 mb-5 border border-slate-200 card-shadow flex flex-wrap items-center justify-between gap-3 text-sm">
             <div class="flex items-center gap-2">
                 <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Presets:</span>
-                <button id="btn-preset-standard" class="px-3 py-1 text-xs font-medium rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                <button id="btn-preset-standard"
+                    class="px-3 py-1 text-xs font-medium rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
                     Standard 22m Pole (7 Guys / 12m Anchor)
                 </button>
-                <button id="btn-preset-heavy" class="px-3 py-1 text-xs font-medium rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                <button id="btn-preset-heavy"
+                    class="px-3 py-1 text-xs font-medium rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
                     Heavy Conductor Load (22m Pole / 15m Anchor)
                 </button>
             </div>
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
-                    <label for="calc-method-select" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Load Sharing:</label>
-                    <select id="calc-method-select" class="text-xs rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-1 px-2.5 bg-slate-50 font-medium">
+                    <label for="calc-method-select"
+                        class="text-xs font-bold text-slate-500 uppercase tracking-wider">Load Sharing:</label>
+                    <select id="calc-method-select"
+                        class="text-xs rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-1 px-2.5 bg-slate-50 font-medium">
                         <option value="elastic" selected>Elastic Deflection Compatibility (Recommended)</option>
                         <option value="equal_moment">Equal Resisting Moment</option>
                         <option value="equal_shear">Equal Horizontal Shear</option>
                     </select>
                 </div>
                 <div class="flex items-center gap-2">
-                    <label for="required-sf-input" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Target SF:</label>
-                    <input type="number" id="required-sf-input" value="2.0" step="0.1" min="1.0" class="w-16 text-xs text-center rounded-md border-slate-300 py-1 font-semibold bg-slate-50">
+                    <label for="required-sf-input"
+                        class="text-xs font-bold text-slate-500 uppercase tracking-wider">Target SF:</label>
+                    <input type="number" id="required-sf-input" value="2.0" step="0.1" min="1.0"
+                        class="w-16 text-xs text-center rounded-md border-slate-300 py-1 font-semibold bg-slate-50">
                 </div>
             </div>
         </div>
@@ -97,21 +114,24 @@
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Pole Height</label>
                             <div class="relative">
-                                <input type="number" id="pole-height-input" value="22.0" step="0.1" class="w-full rounded-md border-slate-300 text-xs py-1.5 px-2 font-semibold">
+                                <input type="number" id="pole-height-input" value="22.0" step="0.1"
+                                    class="w-full rounded-md border-slate-300 text-xs py-1.5 px-2 font-semibold">
                                 <span class="absolute right-2 top-1.5 text-slate-400">m</span>
                             </div>
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Embedment</label>
                             <div class="relative">
-                                <input type="number" id="pole-embedment-input" value="2.8" step="0.1" class="w-full rounded-md border-slate-300 text-xs py-1.5 px-2 font-semibold">
+                                <input type="number" id="pole-embedment-input" value="2.8" step="0.1"
+                                    class="w-full rounded-md border-slate-300 text-xs py-1.5 px-2 font-semibold">
                                 <span class="absolute right-2 top-1.5 text-slate-400">m</span>
                             </div>
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Pole Wt.</label>
                             <div class="relative">
-                                <input type="number" id="pole-weight-input" value="3500" step="50" class="w-full rounded-md border-slate-300 text-xs py-1.5 px-2 font-semibold">
+                                <input type="number" id="pole-weight-input" value="3500" step="50"
+                                    class="w-full rounded-md border-slate-300 text-xs py-1.5 px-2 font-semibold">
                                 <span class="absolute right-2 top-1.5 text-slate-400">kg</span>
                             </div>
                         </div>
@@ -121,22 +141,25 @@
                     <div class="bg-blue-50/70 border border-blue-200 rounded-lg p-3">
                         <div class="flex items-center justify-between mb-1.5">
                             <label class="text-xs font-bold text-blue-900 flex items-center gap-1.5">
-                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                                 Anchor Lead Distance (L)
                             </label>
                             <span class="text-xs font-bold text-blue-700" id="anchor-lead-display">From Base</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <input type="range" id="global-anchor-dist-slider" min="3" max="30" step="0.5" value="12" 
-                                   oninput="document.getElementById('global-anchor-dist').value = this.value; document.getElementById('global-anchor-dist').dispatchEvent(new Event('input'))"
-                                   class="flex-1 accent-blue-600 cursor-pointer">
+                            <input type="range" id="global-anchor-dist-slider" min="3" max="30" step="0.5" value="12"
+                                oninput="document.getElementById('global-anchor-dist').value = this.value; document.getElementById('global-anchor-dist').dispatchEvent(new Event('input'))"
+                                class="flex-1 accent-blue-600 cursor-pointer">
                             <div class="relative w-24">
-                                <input type="number" id="global-anchor-dist" value="12.0" step="0.2" min="1.0" 
-                                       oninput="document.getElementById('global-anchor-dist-slider').value = this.value"
-                                       class="w-full rounded-md border-blue-300 text-xs py-1.5 px-2 font-bold text-blue-950 bg-white">
+                                <input type="number" id="global-anchor-dist" value="12.0" step="0.2" min="1.0"
+                                    oninput="document.getElementById('global-anchor-dist-slider').value = this.value"
+                                    class="w-full rounded-md border-blue-300 text-xs py-1.5 px-2 font-bold text-blue-950 bg-white">
                                 <span class="absolute right-2 top-1.5 text-blue-500 text-xs">m</span>
                             </div>
                         </div>
@@ -150,13 +173,16 @@
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                             <span>Guy Wire Specification</span>
                         </h2>
-                        <span id="guy-badge-size" class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">95 sq.mm</span>
+                        <span id="guy-badge-size"
+                            class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">95
+                            sq.mm</span>
                     </div>
 
                     <div class="space-y-2.5 text-xs">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Strand Size & Type:</label>
-                            <select id="guy-size-select" class="w-full text-xs rounded-md border-slate-300 py-1.5 px-2 bg-slate-50 font-bold text-slate-800 focus:ring-emerald-500 focus:border-emerald-500">
+                            <select id="guy-size-select"
+                                class="w-full text-xs rounded-md border-slate-300 py-1.5 px-2 bg-slate-50 font-bold text-slate-800 focus:ring-emerald-500 focus:border-emerald-500">
                                 <option value="95" selected>95 sq.mm Galvanized Steel Strand (7/4.15 mm)</option>
                                 <option value="50">50 sq.mm Galvanized Steel Strand (7/3.00 mm)</option>
                                 <option value="35">35 sq.mm Galvanized Steel Strand (7/2.50 mm)</option>
@@ -176,14 +202,17 @@
                         </div>
 
                         <div class="pt-1 border-t border-slate-100">
-                            <label class="block font-semibold text-slate-700 mb-1">Rated Breaking Strength (RTS):</label>
+                            <label class="block font-semibold text-slate-700 mb-1">Rated Breaking Strength
+                                (RTS):</label>
                             <div class="flex gap-2">
-                                <select id="guy-rts-preset" class="flex-1 text-xs rounded-md border-slate-300 py-1.5 px-2 bg-slate-50 font-semibold text-slate-800">
+                                <select id="guy-rts-preset"
+                                    class="flex-1 text-xs rounded-md border-slate-300 py-1.5 px-2 bg-slate-50 font-semibold text-slate-800">
                                     <option value="8528" selected>High Strength (8,528 kg / 83.6 kN)</option>
                                     <option value="11600">Extra High Strength (11,600 kg / 113.8 kN)</option>
                                     <option value="custom">Custom RTS (kg)...</option>
                                 </select>
-                                <input type="number" id="guy-rts-custom" value="8528" step="100" class="hidden w-24 text-xs rounded-md border-slate-300 py-1.5 px-2 font-bold text-slate-800">
+                                <input type="number" id="guy-rts-custom" value="8528" step="100"
+                                    class="hidden w-24 text-xs rounded-md border-slate-300 py-1.5 px-2 font-bold text-slate-800">
                             </div>
                         </div>
                     </div>
@@ -200,11 +229,14 @@
                             <p class="text-xs text-slate-400">Toggle levels, select size, adjust heights, add/remove</p>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <button type="button" id="btn-add-guy-wire" title="Add a new guy wire level" class="text-[11px] font-semibold text-white hover:bg-emerald-700 bg-emerald-600 rounded px-2.5 py-1 flex items-center gap-1 transition shadow-sm cursor-pointer">
+                            <button type="button" id="btn-add-guy-wire" title="Add a new guy wire level"
+                                class="text-[11px] font-semibold text-white hover:bg-emerald-700 bg-emerald-600 rounded px-2.5 py-1 flex items-center gap-1 transition shadow-sm cursor-pointer">
                                 <i class="fa-solid fa-plus text-[10px]"></i>
                                 <span>Add Guy</span>
                             </button>
-                            <button type="button" id="btn-sync-guy-sizes" title="Set all levels to match Guy Wire Specification" class="text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded px-2 py-1 flex items-center gap-1 transition cursor-pointer">
+                            <button type="button" id="btn-sync-guy-sizes"
+                                title="Set all levels to match Guy Wire Specification"
+                                class="text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded px-2 py-1 flex items-center gap-1 transition cursor-pointer">
                                 <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
                                 <span>Sync All</span>
                             </button>
@@ -227,7 +259,8 @@
                     <div class="bg-white rounded-xl p-3 border border-slate-200 card-shadow">
                         <span class="text-xs font-semibold text-slate-500 uppercase">Overturning Moment</span>
                         <div id="kpi-overturning-moment" class="text-xl font-extrabold text-blue-600 mt-1">0 kg·m</div>
-                        <span class="text-[11px] text-slate-400" id="kpi-overturning-sublabel">From Conductors & OHGW</span>
+                        <span class="text-[11px] text-slate-400" id="kpi-overturning-sublabel">From Conductors &
+                            OHGW</span>
                     </div>
 
                     <div class="bg-white rounded-xl p-3 border border-slate-200 card-shadow">
@@ -246,7 +279,8 @@
                         <span class="text-xs font-semibold text-slate-500 uppercase">Pole Base Thrust</span>
                         <div id="kpi-pole-thrust" class="text-xl font-extrabold text-purple-600 mt-1">0 kg</div>
                         <div class="mt-1">
-                            <span id="kpi-status-badge" class="px-2 py-0.5 text-[10px] font-bold rounded-full uppercase bg-emerald-100 text-emerald-800">
+                            <span id="kpi-status-badge"
+                                class="px-2 py-0.5 text-[10px] font-bold rounded-full uppercase bg-emerald-100 text-emerald-800">
                                 SAFE
                             </span>
                         </div>
@@ -258,14 +292,18 @@
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-sm font-bold text-slate-800 flex items-center gap-2">
                             <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                             Interactive 2D Static Schematic
                         </h2>
                         <div class="flex items-center gap-4 text-xs font-medium">
-                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Safe (SF &ge; 2.0)</span>
-                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Caution (1.5 - 2.0)</span>
-                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Overloaded (&lt; 1.5)</span>
+                            <span class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Safe (SF &ge; 2.0)</span>
+                            <span class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Caution (1.5 - 2.0)</span>
+                            <span class="flex items-center gap-1.5"><span
+                                    class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Overloaded (&lt; 1.5)</span>
                         </div>
                     </div>
 
@@ -283,47 +321,59 @@
                                 <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
                                 Conductors & Overhead Ground Wire (Side 2)
                             </h2>
-                            <p class="text-xs text-slate-400">Shield Wire &amp; Multi-Phase Conductors connected to SQL Database</p>
+                            <p class="text-xs text-slate-400">Shield Wire &amp; Multi-Phase Conductors connected to SQL
+                                Database</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button type="button" id="btn-add-conductor" title="Add a new conductor level" class="text-[11px] font-semibold text-white hover:bg-blue-700 bg-blue-600 rounded px-2.5 py-1 flex items-center gap-1 transition shadow-sm cursor-pointer">
+                            <button type="button" id="btn-add-conductor" title="Add a new conductor level"
+                                class="text-[11px] font-semibold text-white hover:bg-blue-700 bg-blue-600 rounded px-2.5 py-1 flex items-center gap-1 transition shadow-sm cursor-pointer">
                                 <i class="fa-solid fa-plus text-[10px]"></i>
                                 <span>Add Conductor</span>
                             </button>
-                            <span class="text-xs text-blue-600 font-semibold cursor-pointer hover:underline" id="btn-open-db-modal-link" onclick="document.getElementById('btn-open-db-modal').click()">
+                            <span class="text-xs text-blue-600 font-semibold cursor-pointer hover:underline"
+                                id="btn-open-db-modal-link"
+                                onclick="document.getElementById('btn-open-db-modal').click()">
                                 Manage Database &rarr;
                             </span>
                         </div>
                     </div>
 
                     <!-- Quick Apply Span, Sag, Wind & No. of Conductors Toolbar -->
-                    <div class="mb-3 p-2.5 rounded-lg bg-blue-100/60 border border-blue-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                    <div
+                        class="mb-3 p-2.5 rounded-lg bg-blue-100/60 border border-blue-200 flex flex-wrap items-center justify-between gap-3 text-xs">
                         <div class="flex items-center gap-2">
                             <span class="font-bold text-blue-900">Formula:</span>
-                            <span class="font-mono bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-950 font-semibold">T = (w_r · S²) / (8 · Sag) · Qty</span>
+                            <span
+                                class="font-mono bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-950 font-semibold">T
+                                = (w_r · S²) / (8 · Sag) · Qty</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-blue-800 font-medium">Quick Set All:</span>
                             <div class="flex items-center gap-1">
                                 <span class="text-slate-500 font-semibold">Qty:</span>
-                                <input type="number" id="quick-num-all" value="2" min="1" max="10" step="1" class="w-12 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white">
+                                <input type="number" id="quick-num-all" value="2" min="1" max="10" step="1"
+                                    class="w-12 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white">
                             </div>
                             <div class="flex items-center gap-1">
                                 <span class="text-slate-500">Span:</span>
-                                <input type="number" id="quick-span-all" value="80" step="5" class="w-14 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white">
+                                <input type="number" id="quick-span-all" value="80" step="5"
+                                    class="w-14 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white">
                                 <span class="text-slate-400">m</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <span class="text-slate-500">Sag:</span>
-                                <input type="number" id="quick-sag-all" value="0.6" step="0.05" class="w-14 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white">
+                                <input type="number" id="quick-sag-all" value="0.6" step="0.05"
+                                    class="w-14 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white">
                                 <span class="text-slate-400">m</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <span class="text-slate-600 font-semibold text-blue-900">Wind:</span>
-                                <input type="number" id="quick-wind-all" value="40" step="5" min="0" class="w-14 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white text-blue-950">
+                                <input type="number" id="quick-wind-all" value="40" step="5" min="0"
+                                    class="w-14 rounded border-blue-300 py-0.5 px-1.5 text-center text-xs font-bold bg-white text-blue-950">
                                 <span class="text-slate-400">kg/m²</span>
                             </div>
-                            <button type="button" id="btn-apply-span-sag-all" class="px-2.5 py-0.5 rounded bg-blue-600 hover:bg-blue-500 text-white font-semibold transition text-xs">
+                            <button type="button" id="btn-apply-span-sag-all"
+                                class="px-2.5 py-0.5 rounded bg-blue-600 hover:bg-blue-500 text-white font-semibold transition text-xs">
                                 Apply All
                             </button>
                         </div>
@@ -334,26 +384,36 @@
                         <div class="p-3 rounded-lg bg-sky-50/70 border border-sky-200">
                             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                                 <div class="flex items-center gap-2">
-                                    <input type="checkbox" id="ohgw-enable" checked class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                                    <input type="checkbox" id="ohgw-enable" checked
+                                        class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
                                     <span class="font-bold text-slate-800 flex items-center gap-1.5">
                                         <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd"
+                                                d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                         Overhead Ground Wire (OHGW / Shield Wire)
-                                        <span class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300">Over Top Conductor</span>
+                                        <span
+                                            class="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300">Over
+                                            Top Conductor</span>
                                     </span>
                                 </div>
                                 <div class="flex items-center gap-2 text-slate-600">
-                                    <span id="ohgw-tension-badge" class="font-semibold text-sky-900 bg-sky-100 border border-sky-300 px-2 py-0.5 rounded text-[11px]">T: 0 kg</span>
-                                    <span id="ohgw-moment-badge" class="font-semibold text-blue-800 bg-blue-100 border border-blue-300 px-2 py-0.5 rounded text-[11px]">-</span>
+                                    <span id="ohgw-tension-badge"
+                                        class="font-semibold text-sky-900 bg-sky-100 border border-sky-300 px-2 py-0.5 rounded text-[11px]">T:
+                                        0 kg</span>
+                                    <span id="ohgw-moment-badge"
+                                        class="font-semibold text-blue-800 bg-blue-100 border border-blue-300 px-2 py-0.5 rounded text-[11px]">-</span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-2">
                                 <div class="col-span-2 sm:col-span-4 lg:col-span-3">
                                     <label class="block text-slate-600 mb-1 font-semibold">Wire Spec / Material:</label>
-                                    <select id="ohgw-spec-select" class="w-full rounded border-slate-300 py-1 px-2 font-medium bg-white text-xs text-slate-800">
+                                    <select id="ohgw-spec-select"
+                                        class="w-full rounded border-slate-300 py-1 px-2 font-medium bg-white text-xs text-slate-800">
                                         <option value="GSW-25">25 sq.mm Steel Strand (0.192 kg/m, 1,647 kg)</option>
-                                        <option value="GSW-35" selected>35 sq.mm Steel Strand (0.272 kg/m, 2,330 kg)</option>
+                                        <option value="GSW-35" selected>35 sq.mm Steel Strand (0.272 kg/m, 2,330 kg)
+                                        </option>
                                         <option value="GSW-50">50 sq.mm Steel Strand (0.392 kg/m, 3,355 kg)</option>
                                         <option value="GSW-95">95 sq.mm Steel Strand (0.764 kg/m, 8,528 kg)</option>
                                         <option value="ACSR-50">ACSR 50 sq.mm (0.187 kg/m, 1,480 kg)</option>
@@ -362,27 +422,34 @@
                                 </div>
                                 <div class="col-span-1 sm:col-span-2 lg:col-span-1">
                                     <label class="block text-slate-600 mb-1 font-semibold text-indigo-900">Qty:</label>
-                                    <input type="number" id="ohgw-num" value="1" min="1" max="4" step="1" class="w-full rounded border-indigo-300 py-1 px-1.5 text-xs font-bold text-center text-indigo-950 bg-indigo-50/40">
+                                    <input type="number" id="ohgw-num" value="1" min="1" max="4" step="1"
+                                        class="w-full rounded border-indigo-300 py-1 px-1.5 text-xs font-bold text-center text-indigo-950 bg-indigo-50/40">
                                 </div>
                                 <div class="col-span-1 sm:col-span-2 lg:col-span-1">
                                     <label class="block text-slate-600 mb-1 font-semibold">Height:</label>
-                                    <input type="number" id="ohgw-height" value="19.1" step="0.1" class="w-full rounded border-slate-300 py-1 px-1.5 text-xs font-semibold bg-white text-center">
+                                    <input type="number" id="ohgw-height" value="19.1" step="0.1"
+                                        class="w-full rounded border-slate-300 py-1 px-1.5 text-xs font-semibold bg-white text-center">
                                 </div>
                                 <div class="col-span-1 sm:col-span-2 lg:col-span-2">
                                     <label class="block text-slate-600 mb-1 font-bold text-blue-900">Span (m):</label>
-                                    <input type="number" id="ohgw-span" value="80" step="1" min="1" class="w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center">
+                                    <input type="number" id="ohgw-span" value="80" step="1" min="1"
+                                        class="w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center">
                                 </div>
                                 <div class="col-span-1 sm:col-span-2 lg:col-span-2">
                                     <label class="block text-slate-600 mb-1 font-bold text-blue-900">Sag (m):</label>
-                                    <input type="number" id="ohgw-sag" value="0.50" step="0.05" min="0.01" class="w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center">
+                                    <input type="number" id="ohgw-sag" value="0.50" step="0.05" min="0.01"
+                                        class="w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center">
                                 </div>
                                 <div class="col-span-1 sm:col-span-2 lg:col-span-2">
-                                    <label class="block text-slate-600 mb-1 font-bold text-blue-900">Wind (kg/m²):</label>
-                                    <input type="number" id="ohgw-wind" value="40" min="0" step="5" class="w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-center text-blue-950 bg-blue-50/40">
+                                    <label class="block text-slate-600 mb-1 font-bold text-blue-900">Wind
+                                        (kg/m²):</label>
+                                    <input type="number" id="ohgw-wind" value="40" min="0" step="5"
+                                        class="w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-center text-blue-950 bg-blue-50/40">
                                 </div>
                                 <div class="col-span-1 sm:col-span-2 lg:col-span-1">
                                     <label class="block text-slate-600 mb-1">Angle:</label>
-                                    <input type="number" id="ohgw-angle" value="0" step="1" class="w-full rounded border-slate-300 py-1 px-1 text-xs font-medium text-center bg-white">
+                                    <input type="number" id="ohgw-angle" value="0" step="1"
+                                        class="w-full rounded border-slate-300 py-1 px-1 text-xs font-medium text-center bg-white">
                                 </div>
                             </div>
                         </div>
@@ -399,9 +466,11 @@
                     <div class="flex items-center justify-between pb-2 border-b border-slate-100 mb-3">
                         <h2 class="text-sm font-bold text-slate-800 flex items-center gap-2">
                             <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Guy Wire Tension & Safety Factor Breakdown (<span id="table-guy-spec-label">95 sq.mm Steel Strand</span>)
+                            Guy Wire Tension & Safety Factor Breakdown (<span id="table-guy-spec-label">95 sq.mm Steel
+                                Strand</span>)
                         </h2>
                     </div>
 
@@ -457,28 +526,34 @@
     </main>
 
     <!-- Modal: Conductor SQL Database Management -->
-    <div id="db-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200">
+    <div id="db-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div
+            class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200">
             <!-- Modal Header -->
             <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
                 <div>
                     <h3 class="text-base font-bold flex items-center gap-2">
                         <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16M4 12h16M4 17h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16M4 12h16M4 17h16" />
                         </svg>
                         Conductor Database (SQLite)
                     </h3>
                     <p class="text-xs text-slate-400">Add, edit, search, and manage conductors in the SQL database</p>
                 </div>
-                <button id="btn-close-db-modal" class="text-slate-400 hover:text-white p-1 text-xl font-bold">&times;</button>
+                <button id="btn-close-db-modal"
+                    class="text-slate-400 hover:text-white p-1 text-xl font-bold">&times;</button>
             </div>
 
             <!-- Modal Action Bar -->
-            <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div
+                class="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div class="flex items-center gap-2 flex-1 max-w-md">
-                    <input type="text" id="db-search-input" placeholder="Search by Code (e.g. ACSR, SAC) or Name..." 
-                           class="w-full rounded-md border-slate-300 py-1.5 px-3 text-xs">
-                    <select id="db-type-filter" class="rounded-md border-slate-300 py-1.5 px-2 bg-white text-xs font-medium">
+                    <input type="text" id="db-search-input" placeholder="Search by Code (e.g. ACSR, SAC) or Name..."
+                        class="w-full rounded-md border-slate-300 py-1.5 px-3 text-xs">
+                    <select id="db-type-filter"
+                        class="rounded-md border-slate-300 py-1.5 px-2 bg-white text-xs font-medium">
                         <option value="ALL">All Types</option>
                         <option value="SAC">SAC (Space Aerial)</option>
                         <option value="ACSR">ACSR</option>
@@ -487,10 +562,12 @@
                     </select>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="btn-show-add-conductor" class="px-3 py-1.5 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-500 transition">
+                    <button id="btn-show-add-conductor"
+                        class="px-3 py-1.5 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-500 transition">
                         + Add Conductor
                     </button>
-                    <button id="btn-reset-db" class="px-3 py-1.5 rounded-md bg-slate-200 text-slate-700 font-medium hover:bg-slate-300 transition">
+                    <button id="btn-reset-db"
+                        class="px-3 py-1.5 rounded-md bg-slate-200 text-slate-700 font-medium hover:bg-slate-300 transition">
                         Reset Defaults
                     </button>
                 </div>
@@ -506,11 +583,13 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Code *</label>
-                            <input type="text" id="cond-form-code" placeholder="e.g. SAC-185" required class="w-full rounded border-slate-300 py-1 px-2 text-xs">
+                            <input type="text" id="cond-form-code" placeholder="e.g. SAC-185" required
+                                class="w-full rounded border-slate-300 py-1 px-2 text-xs">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Name *</label>
-                            <input type="text" id="cond-form-name" placeholder="Full description" required class="w-full rounded border-slate-300 py-1 px-2 text-xs">
+                            <input type="text" id="cond-form-name" placeholder="Full description" required
+                                class="w-full rounded border-slate-300 py-1 px-2 text-xs">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Type *</label>
@@ -523,30 +602,39 @@
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Area (sq.mm) *</label>
-                            <input type="number" id="cond-form-area" step="0.1" required class="w-full rounded border-slate-300 py-1 px-2 text-xs">
+                            <input type="number" id="cond-form-area" step="0.1" required
+                                class="w-full rounded border-slate-300 py-1 px-2 text-xs">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Diameter (mm) *</label>
-                            <input type="number" id="cond-form-diam" step="0.1" required class="w-full rounded border-slate-300 py-1 px-2 text-xs">
+                            <input type="number" id="cond-form-diam" step="0.1" required
+                                class="w-full rounded border-slate-300 py-1 px-2 text-xs">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Weight (kg/m) *</label>
-                            <input type="number" id="cond-form-weight" step="0.001" required class="w-full rounded border-slate-300 py-1 px-2 text-xs">
+                            <input type="number" id="cond-form-weight" step="0.001" required
+                                class="w-full rounded border-slate-300 py-1 px-2 text-xs">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">RTS / Breaking Load (kg) *</label>
-                            <input type="number" id="cond-form-rts" step="1" required class="w-full rounded border-slate-300 py-1 px-2 text-xs font-bold">
+                            <input type="number" id="cond-form-rts" step="1" required
+                                class="w-full rounded border-slate-300 py-1 px-2 text-xs font-bold">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-600 mb-1">Standard</label>
-                            <input type="text" id="cond-form-std" value="PEA/TIS" class="w-full rounded border-slate-300 py-1 px-2 text-xs">
+                            <input type="text" id="cond-form-std" value="PEA/TIS"
+                                class="w-full rounded border-slate-300 py-1 px-2 text-xs">
                         </div>
                     </div>
                     <div class="flex items-center justify-between pt-2">
-                        <input type="text" id="cond-form-notes" placeholder="Optional notes" class="flex-1 mr-3 rounded border-slate-300 py-1 px-2 text-xs">
+                        <input type="text" id="cond-form-notes" placeholder="Optional notes"
+                            class="flex-1 mr-3 rounded border-slate-300 py-1 px-2 text-xs">
                         <div class="flex gap-2">
-                            <button type="button" id="btn-cancel-conductor-form" class="px-3 py-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300">Cancel</button>
-                            <button type="submit" class="px-4 py-1 bg-blue-600 text-white rounded font-bold hover:bg-blue-500">Save Conductor</button>
+                            <button type="button" id="btn-cancel-conductor-form"
+                                class="px-3 py-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300">Cancel</button>
+                            <button type="submit"
+                                class="px-4 py-1 bg-blue-600 text-white rounded font-bold hover:bg-blue-500">Save
+                                Conductor</button>
                         </div>
                     </div>
                 </form>
@@ -576,7 +664,8 @@
 
             <!-- Modal Footer -->
             <div class="px-6 py-3 bg-slate-100 border-t border-slate-200 flex justify-end">
-                <button onclick="document.getElementById('db-modal').classList.add('hidden')" class="px-4 py-1.5 bg-slate-800 text-white text-xs font-semibold rounded-lg hover:bg-slate-700">
+                <button onclick="document.getElementById('db-modal').classList.add('hidden')"
+                    class="px-4 py-1.5 bg-slate-800 text-white text-xs font-semibold rounded-lg hover:bg-slate-700">
                     Close
                 </button>
             </div>
@@ -585,7 +674,7 @@
 
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-3 mt-auto text-xs text-slate-500 text-center">
-        Pole Guy Wire Mechanical Calculator &bull; 95 & 50 sq.mm Steel Strand &bull; Units: kg, meter &bull; Conductor Database: SQLite &bull; Complies with Utility Structural Guidelines
+        Developed by Teerin Saneao. All rights reserved. &bull;
     </footer>
 
     <!-- Scripts -->
@@ -594,4 +683,5 @@
     <script src="/static/js/db_manager.js"></script>
     <script src="/static/js/app.js"></script>
 </body>
+
 </html>
