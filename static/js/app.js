@@ -719,8 +719,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (btnApplyAll && quickSpanInput && quickSagInput) {
             btnApplyAll.addEventListener("click", () => {
                 const numVal = Math.max(1, parseInt(quickNumInput ? quickNumInput.value : 2) || 2);
-                const spanVal = parseFloat(quickSpanInput.value) || 80;
-                const sagVal = parseFloat(quickSagInput.value) || 0.6;
+                const spanVal = parseFloat(quickSpanInput.value) || 40;
+                const sagVal = parseFloat(quickSagInput.value) || 0.14;
                 const windVal = Math.max(0, parseFloat(quickWindInput ? quickWindInput.value : 40) || 40);
 
                 appState.conductors.forEach((c) => {
@@ -818,7 +818,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (ohgwSpanInput) {
             ohgwSpanInput.value = appState.overhead_ground_wire.span_m;
             ohgwSpanInput.addEventListener("input", (e) => {
-                appState.overhead_ground_wire.span_m = parseFloat(e.target.value) || 80;
+                appState.overhead_ground_wire.span_m = parseFloat(e.target.value) || 40;
                 runCalculation();
             });
         }
@@ -903,11 +903,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                             </div>
                             <div class="col-span-1 sm:col-span-2 lg:col-span-2">
                                 <label class="block text-slate-500 mb-1 font-bold text-blue-900">Span (m):</label>
-                                <input type="number" id="cond-span-${c.level}" value="${c.span_m || 80}" step="1" min="1" class="cond-row-span w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center" data-index="${idx}">
+                                <input type="number" id="cond-span-${c.level}" value="${c.span_m !== undefined ? c.span_m : 40}" step="1" min="1" class="cond-row-span w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center" data-index="${idx}">
                             </div>
                             <div class="col-span-1 sm:col-span-2 lg:col-span-2">
                                 <label class="block text-slate-500 mb-1 font-bold text-blue-900">Sag (m):</label>
-                                <input type="number" id="cond-sag-${c.level}" value="${c.sag_m || 0.60}" step="0.05" min="0.01" class="cond-row-sag w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center" data-index="${idx}">
+                                <input type="number" id="cond-sag-${c.level}" value="${c.sag_m !== undefined ? c.sag_m : 0.14}" step="0.01" min="0.01" class="cond-row-sag w-full rounded border-blue-300 py-1 px-2 text-xs font-bold text-blue-900 bg-blue-50/40 text-center" data-index="${idx}">
                             </div>
                             <div class="col-span-1 sm:col-span-2 lg:col-span-2">
                                 <label class="block text-slate-500 mb-1 font-bold text-blue-900">Wind (kg/m²):</label>
@@ -1043,8 +1043,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 weight_kg_per_m: lastC ? lastC.weight_kg_per_m : 1.100,
                 overall_diameter_mm: lastC ? lastC.overall_diameter_mm : 26.0,
                 tension_mode: "sag_span",
-                span_m: lastC ? lastC.span_m : 80.0,
-                sag_m: lastC ? lastC.sag_m : 0.60,
+                span_m: lastC ? lastC.span_m : 40.0,
+                sag_m: lastC ? lastC.sag_m : 0.14,
                 num_conductors: lastC ? lastC.num_conductors : 2,
                 wind_pressure_kg_m2: (lastC && lastC.wind_pressure_kg_m2 !== undefined) ? lastC.wind_pressure_kg_m2 : 40.0,
                 deviation_angle_deg: lastC ? lastC.deviation_angle_deg : 0.0
@@ -1303,8 +1303,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 weight_kg_per_m: 1.100,
                 overall_diameter_mm: 26.0,
                 num_conductors: 2,
-                span_m: 80.0,
-                sag_m: 0.60,
+                span_m: 40.0,
+                sag_m: 0.14,
                 wind_pressure_kg_m2: 40.0,
                 deviation_angle_deg: 0.0
             }));
@@ -1319,8 +1319,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 appState.overhead_ground_wire.overall_diameter_mm = 7.5;
                 appState.overhead_ground_wire.height_m = 19.1;
                 appState.overhead_ground_wire.num_conductors = 1;
-                appState.overhead_ground_wire.span_m = 80.0;
-                appState.overhead_ground_wire.sag_m = 0.50;
+                appState.overhead_ground_wire.span_m = 40.0;
+                appState.overhead_ground_wire.sag_m = 0.10;
                 appState.overhead_ground_wire.wind_pressure_kg_m2 = 40.0;
                 const ohgwChk = document.getElementById("ohgw-enable");
                 const ohgwSpec = document.getElementById("ohgw-spec-select");
@@ -1333,10 +1333,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                 if (ohgwSpec) ohgwSpec.value = "GSW-35";
                 if (ohgwH) ohgwH.value = 19.1;
                 if (ohgwN) ohgwN.value = 1;
-                if (ohgwSp) ohgwSp.value = 80;
-                if (ohgwSg) ohgwSg.value = 0.50;
+                if (ohgwSp) ohgwSp.value = 40;
+                if (ohgwSg) ohgwSg.value = 0.10;
                 if (ohgwWindEl) ohgwWindEl.value = 40;
             }
+
+            const quickSpanEl = document.getElementById("quick-span-all");
+            const quickSagEl = document.getElementById("quick-sag-all");
+            if (quickSpanEl) quickSpanEl.value = 40;
+            if (quickSagEl) quickSagEl.value = 0.14;
 
             const quickWindEl = document.getElementById("quick-wind-all");
             if (quickWindEl) quickWindEl.value = 40;

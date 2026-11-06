@@ -435,7 +435,7 @@ class TestPoleGuyMechanics(unittest.TestCase):
             res_35["summary"]["total_overturning_moment_kg_m"]
         )
 
-    def test_default_span_80m(self):
+    def test_default_span_40m(self):
         # Scenario where span_m is not explicitly provided in conductor or OHGW
         scenario = {
             "pole": {"height_m": 22.0, "embedment_m": 2.8, "weight_kg": 3500.0},
@@ -448,10 +448,10 @@ class TestPoleGuyMechanics(unittest.TestCase):
                     "height_m": 18.5,
                     "code": "SAC-185",
                     "weight_kg_per_m": 0.71,
-                    "sag_m": 0.60,
+                    "sag_m": 0.14,
                     "tension_mode": "sag_span",
                     "num_conductors": 1
-                    # span_m omitted -> must default to 80.0m
+                    # span_m omitted -> must default to 40.0m
                 }
             ],
             "overhead_ground_wire": {
@@ -461,7 +461,7 @@ class TestPoleGuyMechanics(unittest.TestCase):
                 "sag_m": 0.50,
                 "tension_mode": "sag_span",
                 "num_conductors": 1
-                # span_m omitted -> must default to 80.0m
+                # span_m omitted -> must default to 40.0m
             },
             "guy_wires": [
                 {"level": 1, "enabled": True, "height_m": 18.5, "anchor_distance_m": 12.0}
@@ -471,14 +471,14 @@ class TestPoleGuyMechanics(unittest.TestCase):
         c1 = res["conductors"][0]
         ohgw = res["overhead_ground_wire"]
 
-        self.assertEqual(c1["span_m"], 80.0)
-        # Expected conductor tension = (0.71 * 80^2) / (8 * 0.6) = 4544 / 4.8 = 946.67 kg
-        expected_c_tension = (0.71 * (80.0 ** 2)) / (8.0 * 0.60)
+        self.assertEqual(c1["span_m"], 40.0)
+        # Expected conductor tension = (0.71 * 40^2) / (8 * 0.14) = 1136 / 1.12 = 1014.29 kg
+        expected_c_tension = (0.71 * (40.0 ** 2)) / (8.0 * 0.14)
         self.assertAlmostEqual(c1["single_tension_kg"], round(expected_c_tension, 2), places=2)
 
-        self.assertEqual(ohgw["span_m"], 80.0)
-        # Expected OHGW tension = (0.392 * 80^2) / (8 * 0.5) = 2508.8 / 4.0 = 627.2 kg
-        expected_ohgw_tension = (0.392 * (80.0 ** 2)) / (8.0 * 0.50)
+        self.assertEqual(ohgw["span_m"], 40.0)
+        # Expected OHGW tension = (0.392 * 40^2) / (8 * 0.5) = 627.2 / 4.0 = 156.8 kg
+        expected_ohgw_tension = (0.392 * (40.0 ** 2)) / (8.0 * 0.50)
         self.assertAlmostEqual(ohgw["single_tension_kg"], round(expected_ohgw_tension, 2), places=2)
 
     def test_default_num_conductors_2(self):
@@ -529,13 +529,13 @@ class TestPoleGuyMechanics(unittest.TestCase):
                     "level": 1,
                     "enabled": True,
                     "height_m": 18.5
-                    # Everything else omitted -> AAC-400 defaults (w=1.100, RTS=6680, span=80, sag=0.6, num=2)
+                    # Everything else omitted -> AAC-400 defaults (w=1.100, RTS=6680, span=40, sag=0.14, num=2)
                 }
             ],
             "overhead_ground_wire": {
                 "enabled": True,
                 "height_m": 19.1
-                # Everything else omitted -> GSW-35 defaults (w=0.272, RTS=2330, span=80, sag=0.5, num=1)
+                # Everything else omitted -> GSW-35 defaults (w=0.272, RTS=2330, span=40, sag=0.5, num=1)
             },
             "guy_wires": [
                 {"level": 1, "enabled": True, "height_m": 18.5, "anchor_distance_m": 12.0}
@@ -548,21 +548,21 @@ class TestPoleGuyMechanics(unittest.TestCase):
         # Verify Conductor defaults
         self.assertEqual(c1["code"], "AAC-400")
         self.assertEqual(c1["num_conductors"], 2)
-        self.assertEqual(c1["span_m"], 80.0)
-        self.assertEqual(c1["sag_m"], 0.60)
-        # Single tension = (1.100 * 80^2) / (8 * 0.6) = 7040 / 4.8 = 1466.67 kg
-        expected_c_tension = (1.100 * (80.0 ** 2)) / (8.0 * 0.60)
+        self.assertEqual(c1["span_m"], 40.0)
+        self.assertEqual(c1["sag_m"], 0.14)
+        # Single tension = (1.100 * 40^2) / (8 * 0.14) = 1760 / 1.12 = 1571.43 kg
+        expected_c_tension = (1.100 * (40.0 ** 2)) / (8.0 * 0.14)
         self.assertAlmostEqual(c1["single_tension_kg"], round(expected_c_tension, 2), places=2)
         self.assertAlmostEqual(c1["horizontal_force_kg"], round(expected_c_tension * 2, 2), places=1)
 
         # Verify OHGW defaults
         self.assertEqual(ohgw["code"], "GSW-35")
-        self.assertEqual(ohgw["span_m"], 80.0)
+        self.assertEqual(ohgw["span_m"], 40.0)
         self.assertEqual(ohgw["sag_m"], 0.50)
         self.assertAlmostEqual(ohgw["weight_kg_per_m"], 0.272, places=3)
         self.assertAlmostEqual(ohgw["breaking_strength_kg"], 2330.0, places=1)
-        # OHGW tension = (0.272 * 80^2) / (8 * 0.5) = 1740.8 / 4 = 435.20 kg
-        expected_ohgw_tension = (0.272 * (80.0 ** 2)) / (8.0 * 0.50)
+        # OHGW tension = (0.272 * 40^2) / (8 * 0.5) = 435.2 / 4 = 108.80 kg
+        expected_ohgw_tension = (0.272 * (40.0 ** 2)) / (8.0 * 0.50)
         self.assertAlmostEqual(ohgw["single_tension_kg"], round(expected_ohgw_tension, 2), places=2)
         self.assertAlmostEqual(ohgw["horizontal_force_kg"], round(expected_ohgw_tension, 2), places=2)
 
