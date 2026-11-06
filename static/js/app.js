@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         pole: {
             height_m: 22.0,
             embedment_m: 2.0,
-            weight_kg: 5500.0
+            weight_kg: 5800.0
         },
         anchor: {
             distance_m: 12.0
